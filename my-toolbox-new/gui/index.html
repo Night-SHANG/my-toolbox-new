@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>脚本工具箱</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <!-- 顶部工具栏 -->
+        <header class="app-header">
+            <div class="header-left">
+                <h1 class="app-title">🚀 脚本工具箱</h1>
+            </div>
+            <div class="header-center">
+                <div class="search-container">
+                    <input type="text" class="search-input" id="search-input" placeholder="搜索脚本...">
+                    <span class="search-icon">🔍</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="btn btn-primary" id="refresh-btn">
+                    <span class="btn-icon">🔄</span>
+                    刷新
+                </button>
+                <button class="btn btn-secondary" id="venv-management-btn">
+                    <span class="btn-icon">📦</span>
+                    环境
+                </button>
+            </div>
+        </header>
+
+        <div class="main-container">
+            <!-- 分类侧边栏 -->
+            <aside class="sidebar">
+                <div class="category-header">
+                    <h3>分类</h3>
+                    <button class="btn btn-small" id="add-category-btn" title="添加分类">+</button>
+                </div>
+                <div class="category-list" id="category-list">
+                    <!-- 分类将通过JavaScript动态生成 -->
+                </div>
+            </aside>
+
+            <!-- 主内容区域 -->
+            <main class="main-content">
+                <div class="scripts-grid" id="scripts-grid">
+                    <!-- 脚本卡片将通过JavaScript动态生成 -->
+                </div>
+            </main>
+        </div>
+
+        <!-- 模态对话框 - 参数配置 -->
+        <div id="modal-overlay" class="modal-overlay" style="display: none;">
+            <div class="modal">
+                <div class="modal-header">
+                    <h3 id="modal-title">配置参数</h3>
+                    <button class="modal-close" id="modal-close">&times;</button>
+                </div>
+                <div class="modal-body" id="modal-body">
+                    <!-- 参数表单将通过JavaScript动态生成 -->
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" id="modal-cancel">取消</button>
+                    <button class="btn btn-primary" id="modal-execute">执行</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 终端输出视图 -->
+        <div id="terminal-view" class="terminal-view" style="display: none;">
+            <div class="terminal-header">
+                <h3>终端输出</h3>
+                <button class="btn btn-danger" id="terminal-kill-btn" style="margin-right: 10px;">🛑 终止任务</button>
+                <button class="btn btn-secondary" id="terminal-close">关闭</button>
+            </div>
+            <div class="terminal-output" id="terminal-output">
+                <!-- 输出内容将通过JavaScript动态添加 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 虚拟环境管理模态对话框 -->
+    <div id="venv-modal-overlay" class="modal-overlay" style="display: none;">
+        <div id="venv-modal" class="modal">
+            <div class="modal-header">
+                <h3>📦 虚拟环境管理</h3>
+                <button class="modal-close" id="venv-modal-close">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 0;">
+                <div class="venv-modal-content">
+                    <!-- 左侧：虚拟环境列表 -->
+                    <div class="venv-list-panel">
+                        <div class="venv-list-header">
+                            <button class="btn btn-primary" id="add-venv-btn">+ 创建新环境</button>
+                        </div>
+                        <div class="venv-list" id="venv-list">
+                            <!-- JS 动态生成环境列表 -->
+                        </div>
+                    </div>
+                    <!-- 右侧：环境详情 -->
+                    <div class="venv-details-panel">
+                        <div class="venv-details-header">
+                            <h4 id="venv-details-title">选择一个环境</h4>
+                            <button class="btn btn-secondary" id="add-dependency-btn">+ 添加依赖</button>
+                        </div>
+                        <div class="venv-packages-list" id="venv-packages-list">
+                            <!-- JS 动态生成包列表 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 进度显示模态对话框 -->
+    <div id="progress-modal-overlay" class="modal-overlay" style="display: none; background: rgba(0, 0, 0, 0.4);">
+        <div class="modal" style="max-width: 450px;">
+            <div id="progress-modal-log" class="modal-body" style="background-color: #1e1e1e; color: #d4d4d4; font-family: 'Courier New', monospace; max-height: 300px; overflow-y: auto;">
+                <!-- 进度日志将动态插入此处 -->
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="script.js"></script>
+    <script type="module" src="venv_ui.js"></script>
+    <script>
+        // 在页面卸载前保存当前的排序状态
+        window.addEventListener('beforeunload', async function() {
+            // 等待pywebview API准备就绪，并且有脚本工具箱实例
+            if (window.pywebview && window.pywebview.api && window.scriptToolbox) {
+                try {
+                    // 使用应用实例的保存方法
+                    await window.scriptToolbox.saveCurrentState();
+                } catch (error) {
+                    console.error('保存排序状态时出错:', error);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
