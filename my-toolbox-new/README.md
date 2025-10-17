@@ -35,6 +35,7 @@
 3.  **启动工具箱**
     安装完成后，关闭上述命令行窗口，然后双击 `start_toolbox.py` 文件即可启动程序。(my-toolbox-new工具箱的路径需要纯英文路径)
 
+查看SCRIPT_DEVELOPMENT_GUIDE.md文档
 
 
 ## 📖 使用指南
